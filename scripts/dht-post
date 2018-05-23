@@ -1,0 +1,13 @@
+#!/bin/bash
+
+URL=http://localhost:3444
+
+TOKEN=$(curl "${URL}/authentication/" \
+  -H 'Content-Type: application/json' \
+  --data-binary @auth.secret.json \
+ | jq -r '.accessToken')
+
+curl "${URL}/dht/" \
+  -H 'Content-Type: application/json' \
+  -H "Authorization: ${TOKEN}" \
+  -d @"$@" | jq '.'
